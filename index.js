@@ -71,9 +71,7 @@ waterfall(
 					"react",
 					"react-navigation"
 				];
-
 				const { dependencies = [] } = config;
-
 				const deps = Object.keys(dependencies).filter(
 					key => !pkgs.includes(key)
 				);
