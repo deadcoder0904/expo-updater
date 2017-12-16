@@ -1,0 +1,37 @@
+{
+	"name": "expo-updater",
+	"version": "0.0.0",
+	"description": "Update package.json to use latest Expo SDK",
+	"license": "MIT",
+	"repository": "deadcoder0904/expo-updater",
+	"author": {
+		"name": "Akshay Kadam",
+		"email": "akshaykadam0904@gmail.com",
+		"url": "http://twitter.com/deadcoder0904"
+	},
+	"engines": {
+		"node": ">=4"
+	},
+	"scripts": {
+		"start": "node index.js"
+	},
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"expo",
+		"react-native",
+		"updater",
+		"cli",
+		"expo-cli",
+		"exposition",
+		"exp"
+	],
+	"dependencies": {
+		"@expo/json-file": "^5.3.0",
+		"async": "^2.6.0",
+		"gh-got": "^7.0.0",
+		"got": "^8.0.1",
+		"package-json": "^4.0.1"
+	}
+}
