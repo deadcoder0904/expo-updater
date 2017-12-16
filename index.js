@@ -2,7 +2,6 @@
 
 const jsonfile = require("@expo/json-file");
 const got = require("got");
-const ghGot = require("gh-got");
 const packageJson = require("package-json");
 const waterfall = require("async/waterfall");
 

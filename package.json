@@ -13,15 +13,17 @@
 		"node": ">=4"
 	},
 	"scripts": {
+		"precommit": "lint-staged",
 		"start": "node index.js"
+	},
+	"lint-staged": {
+		"*.{js,json,css,md}": ["prettier --write", "git add"]
 	},
 	"main": "index.js",
 	"bin": {
 		"expo-updater": "./index.js"
 	},
-	"files": [
-		"index.js"
-	],
+	"files": ["index.js"],
 	"keywords": [
 		"expo",
 		"react-native",
@@ -38,5 +40,10 @@
 		"gh-got": "^7.0.0",
 		"got": "^8.0.1",
 		"package-json": "^4.0.1"
+	},
+	"devDependencies": {
+		"husky": "^0.14.3",
+		"lint-staged": "^6.0.0",
+		"prettier": "^1.9.2"
 	}
 }
