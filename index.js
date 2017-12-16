@@ -65,7 +65,7 @@ waterfall(
 	],
 	function(err, pkgVersions) {
 		jsonfile
-			.readAsync(`${cwd}/a.json`, { cantReadFileDefault: {} })
+			.readAsync(`${cwd}/package.json`, { cantReadFileDefault: {} })
 			.then(config => {
 				const pkgs = [
 					"expo",
@@ -83,7 +83,7 @@ waterfall(
 				deps.forEach(dep => {
 					depsVersions[dep] = config.dependencies[dep];
 				});
-				jsonfile.setAsync(`${cwd}/a.json`, "dependencies", {
+				jsonfile.setAsync(`${cwd}/package.json`, "dependencies", {
 					...pkgVersions,
 					...depsVersions
 				});
