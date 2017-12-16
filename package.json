@@ -1,6 +1,6 @@
 {
 	"name": "expo-updater",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "Update package.json to use latest Expo SDK",
 	"license": "MIT",
 	"repository": "deadcoder0904/expo-updater",
