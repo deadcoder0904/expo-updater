@@ -54,10 +54,7 @@ waterfall(
 						if (len === 0) callback(null, pkgVersions);
 					})
 					.catch(err => {
-						console.log(
-							`Couldn't fetch 'jest-expo' & 'sentry-expo' versions`,
-							err
-						);
+						console.log(`Couldn't fetch 'jest-expo' & 'sentry-expo' versions`);
 						callback(err, null);
 					});
 			});
