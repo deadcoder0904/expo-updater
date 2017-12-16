@@ -25,7 +25,6 @@ waterfall(
 				});
 		},
 		function(pkgVersions, callback) {
-			// arg1 now equals 'one' and arg2 now equals 'two'
 			got(
 				`https://raw.githubusercontent.com/deadcoder0904/expo-updater/master/temp.json`
 			)
