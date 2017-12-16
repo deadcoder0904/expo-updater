@@ -73,17 +73,26 @@ waterfall(
 					"react-navigation"
 				];
 
-				const deps = Object.keys(config.dependencies).filter(
+				const { dependencies = [] } = config;
+
+				const deps = Object.keys(dependencies).filter(
 					key => !pkgs.includes(key)
 				);
 				const depsVersions = {};
 				deps.forEach(dep => {
-					depsVersions[dep] = config.dependencies[dep];
+					depsVersions[dep] = dependencies[dep];
 				});
-				jsonfile.setAsync(`${cwd}/package.json`, "dependencies", {
-					...pkgVersions,
-					...depsVersions
-				});
+				jsonfile
+					.setAsync(`${cwd}/package.json`, "dependencies", {
+						...pkgVersions,
+						...depsVersions
+					})
+					.catch(err => {
+						console.error(`Error setting dependencies in 'package.json'`);
+					});
+			})
+			.catch(err => {
+				console.error(`Error reading 'package.json'`);
 			});
 	}
 );
