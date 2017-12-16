@@ -5,7 +5,6 @@ const packageJson = require("package-json");
 const waterfall = require("async/waterfall");
 
 const cwd = process.cwd();
-let pkgVersions = {};
 
 waterfall(
 	[
@@ -14,22 +13,21 @@ waterfall(
 				.then(res => {
 					const { body } = res;
 					const { version } = JSON.parse(body);
-					pkgVersions = {
+					const pkgVersions = {
 						expo: version,
 						"react-native": `https://github.com/expo/react-native/archive/sdk-${version}.tar.gz`
 					};
 					callback(null, pkgVersions);
 				})
 				.catch(err => {
-					console.log(`Couldn't get 'expo' & 'react-native' versions`);
-					console.error(err);
+					console.log(`Couldn't fetch 'expo' & 'react-native' versions`);
 					callback(err, null);
 				});
 		},
-		function(pkg, callback) {
+		function(pkgVersions, callback) {
 			// arg1 now equals 'one' and arg2 now equals 'two'
 			got(
-				`https://raw.githubusercontent.com/deadcoder0904/expo-packager/master/temp.json`
+				`https://raw.githubusercontent.com/deadcoder0904/expo-updater/master/temp.json`
 			)
 				.then(res => {
 					const { body } = res;
@@ -39,47 +37,55 @@ waterfall(
 					callback(null, pkgVersions);
 				})
 				.catch(err => {
-					console.log(`Couldn't get 'react' & 'react-navigation' versions`);
-					console.error(err);
+					console.log(`Couldn't fetch 'react' & 'react-navigation' versions`);
 					callback(err, null);
 				});
 		},
-		function(pkg, callback) {
+		function(pkgVersions, callback) {
 			const npmRepos = [`jest-expo`, `sentry-expo`];
+			let len = npmRepos.length;
 
 			npmRepos.map(repo => {
 				packageJson(repo)
 					.then(({ version }) => {
 						pkgVersions[repo] = version;
+						len = len - 1;
+						if (len === 0) callback(null, pkgVersions);
 					})
-					.then(res => callback(null, res))
 					.catch(err => {
-						console.log(`Couldn't get 'jest-expo' & 'sentry-expo' versions`);
-						console.error(err);
+						console.log(
+							`Couldn't fetch 'jest-expo' & 'sentry-expo' versions`,
+							err
+						);
+						callback(err, null);
 					});
 			});
 		}
 	],
-	function(err, result) {
-		let pkg;
-
+	function(err, pkgVersions) {
 		jsonfile
-			.readAsync(`${cwd}/package.json`, { cantReadFileDefault: {} })
+			.readAsync(`${cwd}/a.json`, { cantReadFileDefault: {} })
 			.then(config => {
-				pkg = config;
-			});
+				const pkgs = [
+					"expo",
+					"react-native",
+					"jest-expo",
+					"sentry-expo",
+					"react",
+					"react-navigation"
+				];
 
-		console.log(pkgVersions);
+				const deps = Object.keys(config.dependencies).filter(
+					key => !pkgs.includes(key)
+				);
+				const depsVersions = {};
+				deps.forEach(dep => {
+					depsVersions[dep] = config.dependencies[dep];
+				});
+				jsonfile.setAsync(`${cwd}/a.json`, "dependencies", {
+					...pkgVersions,
+					...depsVersions
+				});
+			});
 	}
 );
-
-// console.log({ pkg });
-
-/*
-expo: 24.0.0
-react-native: https://github.com/expo/react-native/archive/sdk-24.0.0.tar.gz
-jest-expo: 24.0.0
-sentry-expo: 1.7.0
-react: 16.0.0
-react-navigation: 1.0.0-beta.21
-*/
