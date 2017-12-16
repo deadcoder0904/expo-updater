@@ -84,6 +84,11 @@ waterfall(
 						...pkgVersions,
 						...depsVersions
 					})
+					.then(res => {
+						console.log(
+							`Expo SDK updated to Version ${pkgVersions["expo"]} 🎉`
+						);
+					})
 					.catch(err => {
 						console.error(`Error setting dependencies in 'package.json'`);
 					});
