@@ -19,7 +19,9 @@
 	"bin": {
 		"expo-updater": "./index.js"
 	},
-	"files": ["index.js"],
+	"files": [
+		"index.js"
+	],
 	"keywords": [
 		"expo",
 		"react-native",
