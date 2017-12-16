@@ -15,6 +15,10 @@
 	"scripts": {
 		"start": "node index.js"
 	},
+	"main": "index.js",
+	"bin": {
+		"expo-updater": "index.js"
+	},
 	"files": ["index.js"],
 	"keywords": [
 		"expo",
@@ -23,6 +27,7 @@
 		"cli",
 		"expo-cli",
 		"exposition",
+		"expo-updater",
 		"exp"
 	],
 	"dependencies": {

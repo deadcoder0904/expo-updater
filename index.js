@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const jsonfile = require("@expo/json-file");
 const got = require("got");
 const ghGot = require("gh-got");
