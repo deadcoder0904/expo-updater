@@ -34,6 +34,7 @@
 		"expo-updater",
 		"exp"
 	],
+	"preferGlobal": true,
 	"dependencies": {
 		"@expo/json-file": "^5.3.0",
 		"async": "^2.6.0",

@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#! /usr/bin/env node
 
 const jsonfile = require("@expo/json-file");
 const got = require("got");
