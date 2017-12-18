@@ -80,10 +80,11 @@ waterfall(
 					depsVersions[dep] = dependencies[dep];
 				});
 				jsonfile
-					.setAsync(`${cwd}/package.json`, "dependencies", {
-						...pkgVersions,
-						...depsVersions
-					})
+					.setAsync(
+						`${cwd}/package.json`,
+						"dependencies",
+						Object.assign(pkgVersions, depsVersions)
+					)
 					.then(res => {
 						console.log(
 							`Expo SDK updated to Version ${pkgVersions["expo"]} 🎉`
