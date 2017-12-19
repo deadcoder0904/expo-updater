@@ -1,6 +1,6 @@
 {
 	"name": "expo-updater",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "Update package.json to use latest Expo SDK",
 	"license": "MIT",
 	"repository": "deadcoder0904/expo-updater",
@@ -15,11 +15,11 @@
 	"scripts": {
 		"start": "node index.js"
 	},
-	"main": "./dist/index.js",
+	"main": "index.js",
 	"bin": {
-		"expo-updater": "./dist/index.js"
+		"expo-updater": "index.js"
 	},
-	"files": ["dist"],
+	"files": ["index.js"],
 	"keywords": [
 		"expo",
 		"react-native",
