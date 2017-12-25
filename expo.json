@@ -1,9 +1,13 @@
 {
-	"expo": "^24.0.0",
-	"react": "16.0.0",
-	"react-native":
-		"https://github.com/expo/react-native/archive/sdk-24.0.0.tar.gz",
-	"react-navigation": "^1.0.0-beta.21",
-	"jest-expo": "^24.0.0",
-	"sentry-expo": "~1.7.0"
+	"dependencies": {
+		"expo": "^24.0.0",
+		"react": "16.0.0",
+		"react-native":
+			"https://github.com/expo/react-native/archive/sdk-24.0.0.tar.gz",
+		"react-navigation": "^1.0.0-beta.21"
+	},
+	"devDependencies": {
+		"jest-expo": "^24.0.0",
+		"sentry-expo": "~1.7.0"
+	}
 }

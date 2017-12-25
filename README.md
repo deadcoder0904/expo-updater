@@ -22,10 +22,11 @@ $ expo-updater
 
 ## Symlink
 
-1. If you want to use the repo, just clone it or download it.
+1. If you want to use your own version, just clone it or download it.
 2. `cd expo-updater`
 3. `npm install`
 4. `npm link` to create a symlink to `expo-updater`
+5. Now change the `index.js` file or `expo.json` file & then repeat `Step 4` again & it will use your own version.
 
 ## Related
 
