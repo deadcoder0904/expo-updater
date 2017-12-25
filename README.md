@@ -16,6 +16,17 @@ Goto the project root & run
 $ expo-updater
 ```
 
+## :warning: Warning ️
+
+> Original Implementation was made to be automated, but the Expo team changes versions continuously so the original implementation didn't work when version 24.0.1 was published so I've changed the implementation to use a `expo.json` file which will be using a `JSON` file maintained by me until I am using Expo. You can fork this repo to use your own if I stop maintaining. Follow the below steps to use your own local version.
+
+## Symlink
+
+1. If you want to use the repo, just clone it or download it.
+2. `cd expo-updater`
+3. `npm install`
+4. `npm link` to create a symlink to `expo-updater`
+
 ## Related
 
 [Surrender](https://github.com/tiaanduplessis/react-native-surrender) - CLI script that clears Watchman, removes node_modules and cleans cache using npm or yarn
