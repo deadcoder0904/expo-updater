@@ -3,11 +3,10 @@ const jsonfile = require("jsonfile");
 const got = require("got");
 const meow = require("meow");
 const chalk = require("chalk");
-const updateNotifier = require("update-notifier");
 const yosay = require("yosay");
 
 const cwd = process.cwd();
-const fileName = `package.json`;
+const fileName = `a.json`;
 const filePath = `${cwd}/${fileName}`;
 const URL = `https://raw.githubusercontent.com/deadcoder0904/expo-updater/master/expo.json`;
 
@@ -83,7 +82,6 @@ function main() {
 
 	{green.bold Examples}
 		$ expo-updater 1
-		Expo SDK updated to Version 24.0.0 🎉
 
 	{green.bold Options}
 		1 - Install {dim minimum required packages}
@@ -92,10 +90,6 @@ function main() {
 		4 - Install {dim all of the above}
 	`
 	);
-
-	updateNotifier({
-		pkg: cli.pkg
-	}).notify();
 
 	const option = parseInt(cli.input[0]) || 0;
 	if (!option || option < 1 || option > 4) cli.showHelp([(code = 2)]);
