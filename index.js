@@ -1,20 +1,20 @@
 #! /usr/bin/env node
-
-const jsonfile = require("@expo/json-file");
+const jsonfile = require("jsonfile");
 const got = require("got");
 const meow = require("meow");
 const chalk = require("chalk");
 const updateNotifier = require("update-notifier");
-const pkg = require("./package.json");
+const yosay = require("yosay");
 
 const cwd = process.cwd();
-const fileName = `a.json`;
+const fileName = `package.json`;
+const filePath = `${cwd}/${fileName}`;
 const URL = `https://raw.githubusercontent.com/deadcoder0904/expo-updater/master/expo.json`;
 
-updateNotifier({ pkg }).notify();
-
 function getRemainingDeps(expectedPkgs, dependencies) {
-	const deps = Object.keys(dependencies).filter(key => !pkgs.includes(key));
+	const deps = Object.keys(dependencies).filter(
+		key => !expectedPkgs.includes(key)
+	);
 	const depsVersions = {};
 	deps.forEach(dep => {
 		depsVersions[dep] = dependencies[dep];
@@ -22,70 +22,45 @@ function getRemainingDeps(expectedPkgs, dependencies) {
 	return depsVersions;
 }
 
-function readPackageJSON(success = () => null, error = () => null) {
-	jsonfile
-		.readAsync(`${cwd}/${fileName}`, { cantReadFileDefault: {} })
-		.then(success)
-		.catch(error);
-}
-
-function writePackageJSON(
-	key,
-	result,
-	success = () => null,
-	error = () => null
-) {
-	jsonfile
-		.setAsync(`${cwd}/${fileName}`, key, result)
-		.then(success)
-		.catch(error);
-}
-
-function findAndReplaceDeps() {
-	const deps = ["expo", "react-native", "react", "react-navigation"];
-	const { dependencies = [] } = config;
-
-	const remainingDeps = getRemainingDeps(deps, dependencies);
-	writePackageJSON(
-		"dependencies",
-		Object.assign(newDeps["dependencies"], remainingDeps),
-		res => {
-			console.log(
-				`Expo SDK updated to Version ${newDeps["dependencies"]["expo"].slice(
-					"1"
-				)} 🎉`
-			);
-		},
-		err => {
-			console.error(`Error setting dependencies in '${fileName}'`);
-		}
-	);
-}
-
 function replacePackageJSON(newDeps, option) {
-	readPackageJSON(
-		config => {
-			findAndReplaceDeps();
+	const config = jsonfile.readFileSync(filePath);
 
-			const devDeps = ["jest-expo", "sentry-expo"];
-			const { devDependencies = [] } = config;
+	const deps = ["expo", "react-native", "react", "react-navigation"];
+	const { dependencies = {}, devDependencies = {} } = config;
+	const remainingDeps = getRemainingDeps(deps, dependencies);
 
-			let remainingDevDeps;
-			let tempDevDeps = Object.assign({}, newDeps.devDependencies);
-
-			if (option === 2) {
-				remainingDevDeps = replacePackagesDeps(devDeps, [devDependencies[0]]);
-				delete tempDevDeps[devDependencies[1]];
-			} else if (option === 3) {
-				remainingDevDeps = replacePackagesDeps(devDeps, [devDependencies[1]]);
-				delete tempDevDeps[devDependencies[0]];
-			} else if (option === 4)
-				remainingDevDeps = replacePackagesDeps(devDeps, devDependencies);
-		},
-		err => {
-			console.error(`Error reading '${fileName}'`);
-		}
+	config["dependencies"] = Object.assign(
+		newDeps["dependencies"],
+		remainingDeps
 	);
+
+	const devDeps = ["jest-expo", "sentry-expo"];
+	let remainingDevDeps,
+		tempDevDeps = newDeps["devDependencies"];
+	if (option === 1) {
+		remainingDevDeps = config["devDependencies"];
+		tempDevDeps = {};
+	} else if (option === 2) {
+		remainingDevDeps = getRemainingDeps(["jest-expo"], devDependencies);
+		delete tempDevDeps["sentry-expo"];
+	} else if (option === 3) {
+		remainingDevDeps = getRemainingDeps(["sentry-expo"], devDependencies);
+		delete tempDevDeps["jest-expo"];
+	} else remainingDevDeps = getRemainingDeps(devDeps, devDependencies);
+
+	config["devDependencies"] = Object.assign(tempDevDeps, remainingDevDeps);
+	jsonfile.writeFile(filePath, config, { spaces: 2 }, function(err) {
+		if (err) console.error(err);
+		console.log(
+			yosay(
+				chalk.blue(
+					`\nExpo SDK updated to Version ${newDeps["dependencies"][
+						"expo"
+					].slice("1")}\n`
+				)
+			)
+		);
+	});
 }
 
 function fetchLatestExpoSDK(option) {
@@ -114,13 +89,16 @@ function main() {
 		1 - Install {dim minimum required packages}
 		2 - Install 1 with {dim jest-expo}
 		3 - Install 1 with {dim sentry-expo}
-		4 - Install 1 with {dim jest-expo} & {dim sentry-expo}
-		5 - Install {dim all packages}
+		4 - Install {dim all of the above}
 	`
 	);
 
+	updateNotifier({
+		pkg: cli.pkg
+	}).notify();
+
 	const option = parseInt(cli.input[0]) || 0;
-	if (!option || option < 1 || option > 5) cli.showHelp([(code = 2)]);
+	if (!option || option < 1 || option > 4) cli.showHelp([(code = 2)]);
 	fetchLatestExpoSDK(option);
 }
 
