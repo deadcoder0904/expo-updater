@@ -6,7 +6,7 @@ const chalk = require("chalk");
 const yosay = require("yosay");
 
 const cwd = process.cwd();
-const fileName = `a.json`;
+const fileName = `package.json`;
 const filePath = `${cwd}/${fileName}`;
 const URL = `https://raw.githubusercontent.com/deadcoder0904/expo-updater/master/expo.json`;
 
