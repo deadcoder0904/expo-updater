@@ -62,7 +62,7 @@ function replacePackageJSON(newDeps, option) {
 	});
 }
 
-function fetchLatestExpoSDK(option) {
+function fetchLatestExpoSDKVersions(option) {
 	got(URL)
 		.then(res => {
 			const { body } = res;
@@ -74,26 +74,22 @@ function fetchLatestExpoSDK(option) {
 		});
 }
 
-function main() {
-	const cli = meow(
-		chalk`
-	{green.bold Usage}
-		$ expo-updater <option>
+const cli = meow(
+	chalk`
+{green.bold Usage}
+	$ expo-updater <option>
 
-	{green.bold Examples}
-		$ expo-updater 1
+{green.bold Examples}
+	$ expo-updater 1
 
-	{green.bold Options}
-		1 - Install {dim minimum required packages}
-		2 - Install 1 with {dim jest-expo}
-		3 - Install 1 with {dim sentry-expo}
-		4 - Install {dim all of the above}
-	`
-	);
+{green.bold Options}
+	1 - Install {dim minimum required packages}
+	2 - Install 1 with {dim jest-expo}
+	3 - Install 1 with {dim sentry-expo}
+	4 - Install {dim all of the above}
+`
+);
 
-	const option = parseInt(cli.input[0]) || 0;
-	if (!option || option < 1 || option > 4) cli.showHelp([(code = 2)]);
-	fetchLatestExpoSDK(option);
-}
-
-main();
+const option = parseInt(cli.input[0]) || 0;
+if (!option || option < 1 || option > 4) cli.showHelp([(code = 2)]);
+fetchLatestExpoSDKVersions(option);
